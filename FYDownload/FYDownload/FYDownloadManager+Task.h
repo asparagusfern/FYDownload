@@ -10,17 +10,17 @@
 
 @interface FYDownloadManager (Task)<NSURLSessionDownloadDelegate>
 
-- (void)addDownload:(FYDownloadItem *)downloadItem;
+- (void)addDownload:(FYDownloadItem *)downloadItem;//添加下载任务
 
-- (void)startAll;
+- (void)startAll;//启动所有未完成任务
 
-- (void)suspendedAll;
+- (void)suspendedAll;//暂停某个任务
 
-- (void)removeAll;
+- (void)removeAll;//删除所有任务
 
-- (void)start:(NSURL *)url;
+- (void)start:(NSURL *)url;//开启某个任务
 
-- (void)suspended:(NSURL *)url;
+- (void)suspended:(NSURL *)url;//暂停某个任务
 
-- (void)remove:(NSURL *)url;
+- (void)remove:(NSURL *)url;//删除某个任务
 @end

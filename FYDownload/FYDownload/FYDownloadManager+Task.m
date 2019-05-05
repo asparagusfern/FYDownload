@@ -60,6 +60,10 @@
     } else {
         //判断是否在下载任务中
         FYDownloadItem *temDownloadItem = [self getDownloadItem:url];
+        if (temDownloadItem.downloadState == FYDownload_Status_fail || temDownloadItem.downloadState == FYDownload_Status_complete) {
+            //如果已经下载完成或者失败
+            return;
+        }
         if (temDownloadItem) {
             NSURLSessionDownloadTask *task = [self.urlToTaskDictionary objectForKey:url];
             if (!task) {//这里是重启App为已存在任务创建task
@@ -84,6 +88,10 @@
     } else {
         //判断是否在下载任务中
         FYDownloadItem *temDownloadItem = [self getDownloadItem:url];
+        if (temDownloadItem.downloadState == FYDownload_Status_fail || temDownloadItem.downloadState == FYDownload_Status_complete) {
+            //如果已经下载完成或者失败
+            return;
+        }
         if (temDownloadItem) {
             NSURLSessionDownloadTask *task = [self.urlToTaskDictionary objectForKey:url];
             if (!task) {//这个正常情况不会执行
