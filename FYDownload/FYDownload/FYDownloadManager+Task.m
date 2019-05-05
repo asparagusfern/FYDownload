@@ -119,7 +119,7 @@
         if (temDownloadItem) {
             NSURLSessionDownloadTask *task = [self.urlToTaskDictionary objectForKey:url];
             if (task) {
-                [task suspend];
+                [task cancel];
                 [self.urlToTaskDictionary removeObjectForKey:temDownloadItem.requestUrl];
                 [self.urlToItemDictionary removeObjectForKey:temDownloadItem.requestUrl];
             }

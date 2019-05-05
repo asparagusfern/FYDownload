@@ -9,7 +9,8 @@
 #import "ViewController.h"
 #import "FYDownloadManager+Task.h"
 #import "FYDownloadTableViewCell.h"
-@interface ViewController ()<UITableViewDataSource,FYDownloadTableViewCellDelegate>
+#import <AVKit/AVKit.h>
+@interface ViewController ()<UITableViewDataSource,UITableViewDelegate,FYDownloadTableViewCellDelegate>
 @property (nonatomic,strong) UITableView *tableView;
 @end
 
@@ -26,9 +27,9 @@
 {
     //首次添加任务(演示demo使用)
     if ([FYDownloadManager shareManager].downloadItemArray.count == 0) {
-        FYDownloadItem *item = [[FYDownloadItem alloc] init:[NSURL URLWithString:@"http://ultravideo.cs.tut.fi/video/ShakeNDry_3840x2160_30fps_420_8bit_AVC_MP4.mp4"]];
+        FYDownloadItem *item = [[FYDownloadItem alloc] init:[NSURL URLWithString:@"http://vfx.mtime.cn/Video/2019/03/18/mp4/190318214226685784.mp4"]];
         [[FYDownloadManager shareManager] addDownload:item];
-        FYDownloadItem *item1 = [[FYDownloadItem alloc] init:[NSURL URLWithString:@"http://ultravideo.cs.tut.fi/video/Beauty_1920x1080_30fps_420_8bit_AVC_MP4.mp4"]];
+        FYDownloadItem *item1 = [[FYDownloadItem alloc] init:[NSURL URLWithString:@"http://vfx.mtime.cn/Video/2019/03/19/mp4/190319104618910544.mp4"]];
         [[FYDownloadManager shareManager] addDownload:item1];
     }
 }
@@ -53,6 +54,26 @@
 {
     [[FYDownloadManager shareManager] remove:[NSURL URLWithString:cell.urlStr]];
     [_tableView reloadData];
+}
+
+#pragma mark UITableViewDelegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    FYDownloadItem *currentItem = [[FYDownloadManager shareManager].downloadItemArray objectAtIndex:indexPath.row];
+    if (currentItem.downloadState == FYDownload_Status_complete) {
+
+        AVPlayerViewController *vc = [[AVPlayerViewController alloc] init];
+        AVPlayer *avPlayer = [AVPlayer playerWithURL:currentItem.saveUrl];
+        vc.player = avPlayer;
+        [self presentViewController:vc animated:YES completion:^{
+            [vc.player play];
+        }];
+        
+        
+    } else {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"下载中..." delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alertView show];
+    }
 }
 
 #pragma mark UITableViewDataSource
@@ -80,6 +101,7 @@
     if (!_tableView) {
         _tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
         _tableView.dataSource = self;
+        _tableView.delegate = self;
         _tableView.rowHeight = 65;
     }
     return _tableView;

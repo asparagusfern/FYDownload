@@ -42,7 +42,7 @@
 - (NSURL *)saveUrl
 {
     if (!_saveUrl) {
-        _saveUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@",FYDwonloadFileHomePath,[_requestUrl.absoluteString MD5]]];
+        _saveUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@.mp4",FYDwonloadFileHomePath,[_requestUrl.absoluteString MD5]]];
     }
     return _saveUrl;
 }
